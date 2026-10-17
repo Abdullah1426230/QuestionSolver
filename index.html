@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="icon-192.png">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="الأسئلة">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>مولّد الأسئلة بالذكاء الاصطناعي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--tx:#1d2a2a;--mut:#667;--ac:#0f766e;--acx:#fff;--bd:#dcd9d0;--ok:#15803d;--okb:#dcfce7;--no:#b91c1c;--nob:#fee2e2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--card:#1c2522;--tx:#e9efed;--mut:#9aa9a5;--ac:#2dd4bf;--acx:#06201c;--bd:#33423e;--ok:#4ade80;--okb:#123a22;--no:#f87171;--nob:#3f1818;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121816;--card:#1c2522;--tx:#e9efed;--mut:#9aa9a5;--ac:#2dd4bf;--acx:#06201c;--bd:#33423e;--ok:#4ade80;--okb:#123a22;--no:#f87171;--nob:#3f1818;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Cairo","Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.5rem;margin:8px 0 4px}.sub{color:var(--mut);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:860px){.grid.two{grid-template-columns:1fr 1fr;align-items:start}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+.drop{border:2px dashed var(--bd);border-radius:12px;padding:18px;text-align:center;cursor:pointer;color:var(--mut)}
+.drop.on{border-color:var(--ac);color:var(--tx)}
+textarea,select,input[type=number]{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:9px;font:inherit}
+textarea{min-height:90px;resize:vertical;margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.row>label{flex:1;min-width:130px;font-size:.88rem;color:var(--mut)}
+.hint{font-size:.82rem;color:var(--ac);margin-top:2px;min-height:1.2em}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px}
+button.pri{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:700;width:100%;margin-top:14px;padding:12px}
+button:disabled{opacity:.5;cursor:default}
+.vbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:8px}
+.vbar input{width:70px;text-align:center}
+.cv{overflow:auto;max-height:70vh;border:1px solid var(--bd);border-radius:10px;background:#fff;text-align:center}
+.cv canvas{max-width:100%;height:auto}
+.q h3{margin:0 0 10px;font-size:1.05rem}
+.opt{display:block;width:100%;text-align:start;margin:6px 0}
+.opt.ok{background:var(--okb);border-color:var(--ok)}.opt.no{background:var(--nob);border-color:var(--no)}
+.exp{margin-top:10px;padding:10px;border-radius:10px;background:var(--bg);font-size:.95rem}
+.msg{color:var(--mut);text-align:center;padding:8px}.err{color:var(--no)}
+.score{font-weight:700;font-size:1.1rem;text-align:center}
+.chk{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.9rem}
+[dir=auto]{unicode-bidi:plaintext}
+#set input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:9px;font:inherit}
+#set summary{cursor:pointer;font-weight:600}
+#set a{color:var(--ac)}
+.st{margin:0 0 14px}
+.stt{font-weight:700;display:flex;gap:8px;align-items:baseline;line-height:1.6}
+.num{background:var(--ac);color:var(--acx);border-radius:50%;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;flex:none}
+.eq{direction:ltr;text-align:left;unicode-bidi:isolate;font-family:"Cascadia Code",Consolas,"SF Mono",Menlo,monospace;font-size:.92rem;line-height:1.6;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;margin:5px 0;white-space:pre-wrap;word-break:break-word}
+.note{color:var(--mut);margin:3px 0;font-size:.95rem}
+.qtr{color:var(--mut);margin:-2px 0 14px;padding:8px 12px;border-inline-start:3px solid var(--ac);background:var(--bg);border-radius:8px;font-size:.95rem}
+.ans{background:var(--okb);border-inline-start:4px solid var(--ok);border-radius:10px;padding:10px 12px;margin-top:6px}
+.ans .eq{background:transparent;border:0;padding:2px 0;margin:2px 0;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+<h1>📝 مولّد الأسئلة بالذكاء الاصطناعي</h1>
+<p class="sub">ارفع ملف عربي أو إنجليزي، اختر الصفحات من المعاينة، وولّد أسئلة أو مسائل مشابهة.</p>
+<details class="card" id="set"><summary>⚙️ الإعدادات (مفتاح Gemini)</summary>
+<div class="row"><label>مفتاح API<input type="password" id="key" dir="ltr" placeholder="AIza..." autocomplete="off"></label><label>النموذج<input id="model" dir="ltr" value="gemini-flash-latest"></label></div>
+<div class="hint" style="color:var(--mut)"><a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">احصل على مفتاح مجاني من Google AI Studio</a> — يُحفظ في متصفحك فقط. لا تشارك هذا الموقع مع أحد وهو فيه مفتاحك.</div></details>
+
+<div class="grid two">
+<div>
+  <div class="card">
+    <div class="drop" id="drop">اضغط لرفع ملف أو اسحبه (PDF, DOCX, TXT, MD, CSV)</div>
+    <input type="file" id="file" hidden accept=".pdf,.docx,.txt,.md,.csv">
+    <textarea id="txt" dir="auto" placeholder="أو الصق النص هنا... / or paste text here"></textarea>
+  </div>
+  <div class="card" id="viewer" hidden>
+    <div class="vbar">
+      <button id="prev">◀</button>
+      <span>صفحة <input type="number" id="pg" min="1" value="1"> / <b id="tot">0</b></span>
+      <button id="next">▶</button>
+    </div>
+    <div class="vbar">
+      <button id="setFrom">⏮ ابدأ من هنا</button>
+      <button id="setTo">⏭ انتهِ هنا</button>
+    </div>
+    <div class="cv"><canvas id="cv"></canvas></div>
+  </div>
+</div>
+
+<div>
+  <div class="card">
+    <div class="row" id="rangeRow" style="margin-top:0">
+      <label>من صفحة<input type="number" id="from" min="1" value="1"></label>
+      <label>إلى صفحة<input type="number" id="to" min="1" value="1"></label>
+    </div>
+    <div class="row">
+      <label>طريقة التوليد
+        <select id="mode"><option value="auto">تلقائي</option><option value="content">أسئلة من المحتوى</option><option value="similar">أسئلة مشابهة للأمثلة والمسائل</option></select>
+      </label>
+      <label>نوع الأسئلة
+        <select id="type"><option value="auto">تلقائي</option><option value="mcq">اختيار من متعدد</option><option value="tf">صح / خطأ</option><option value="short">إجابة قصيرة</option><option value="problem">مسألة (مع الحل)</option><option value="mix">متنوعة</option></select>
+      </label>
+    </div>
+    <div class="hint" id="auto"></div>
+    <div class="row">
+      <label>العدد<input type="number" id="n" value="6" min="1" max="30"></label>
+      <label>الصعوبة<select id="lvl"><option>سهل</option><option selected>متوسط</option><option>صعب</option></select></label>
+      <label>لغة الأسئلة
+        <select id="lang"><option value="auto">نفس لغة الملف</option><option value="ar">عربي</option><option value="en">English</option><option value="mix">عربي + مصطلحات إنجليزية</option></select>
+      </label>
+    </div>
+    <label class="chk" id="imgRow" hidden><input type="checkbox" id="img"> اقرأ الصفحات كصور (للمعادلات والرسومات والملفات الممسوحة، حتى 12 صفحة)</label>
+    <label class="chk"><input type="checkbox" id="trG" checked> ترجمة كل سؤال تحته (عربي ⇄ إنجليزي)</label>
+    <button class="pri" id="go">ولّد الأسئلة</button>
+    <button id="stop" hidden style="width:100%;margin-top:8px;color:var(--no);border-color:var(--no)">⏹ إيقاف التوليد</button>
+  </div>
+</div>
+</div>
+<div class="card" id="solveCard">
+  <h3 style="margin:0 0 6px">🧮 حلّ أسئلة من الحافظة</h3>
+  <div class="hint" style="color:var(--mut)">الصق سؤالًا أو أكثر (نص أو صورة) وأحلّها لك خطوة بخطوة.</div>
+  <textarea id="sq" dir="auto" placeholder="الصق الأسئلة هنا... / paste questions here"></textarea>
+  <div class="row" style="align-items:center;margin-top:8px"><button id="clip">📋 لصق من الحافظة</button><button id="clr">🗑 مسح</button><span id="imgn" style="color:var(--mut)"></span></div>
+  <label class="chk"><input type="checkbox" id="trS" checked> ترجمة السؤال تحته (عربي ⇄ إنجليزي)</label>
+  <button class="pri" id="solveBtn">حلّ بالخطوات</button>
+</div>
+<div id="out"></div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const out=$('out'),txt=$('txt'),drop=$('drop');
+let ctl=null,pdf=null,N=0,cur=1,sug={type:'mcq',mode:'content'},gen=0;
+
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+
+const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(',')[1]);f.readAsDataURL(b)});
+const E=(code,message,text)=>({code,message,text});
+$('key').value=localStorage.getItem('gk')||'';$('model').value=localStorage.getItem('gm')||'gemini-flash-latest';
+$('key').onchange=()=>localStorage.setItem('gk',$('key').value.trim());
+$('model').onchange=()=>localStorage.setItem('gm',$('model').value.trim());
+if(!$('key').value)$('set').open=true;
+const sample={
+  limits:async()=>({images:{maxCount:10}}),
+  json:async(prompt,o={})=>{
+    const key=$('key').value.trim(),model=$('model').value.trim()||'gemini-flash-latest';
+    if(!key)throw E('no_key','');
+    const parts=[{text:prompt}];
+    for(const b of(o.images||[]))parts.push({inline_data:{mime_type:b.type||'image/jpeg',data:await b64(b)}});
+    const body=JSON.stringify({contents:[{role:'user',parts}],generationConfig:{responseMimeType:'application/json',temperature:.7,maxOutputTokens:8192}});
+    const wait=ms=>new Promise((res,rej)=>{const t=setTimeout(res,ms);if(o.signal)o.signal.addEventListener('abort',()=>{clearTimeout(t);rej(E('cancelled',''))},{once:true})});
+    const models=[model];if(!/lite/.test(model))models.push('gemini-flash-lite-latest');
+    let r,j;
+    for(const m of models){
+      for(let a=0;a<3;a++){
+        try{r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(m)+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},signal:o.signal,body})}
+        catch(e){throw E(e&&e.name==='AbortError'?'cancelled':'network',String(e&&e.message||e))}
+        j=await r.json().catch(()=>({}));
+        if(r.ok||![500,503,504].includes(r.status))break;
+        if(a<2){if(o.status)o.status('النموذج مشغول ('+m+')، إعادة المحاولة '+(a+1)+'/2...');await wait(a?7000:3000)}
+      }
+      if(r.ok||![500,503,504].includes(r.status))break;
+      if(m!==models[models.length-1]&&o.status)o.status('النموذج مشغول، التحويل إلى '+models[models.length-1]+'...');
+    }
+    if(!r.ok)throw E(r.status===429?'rate_limited':[400,401,403].includes(r.status)?'bad_key':r.status===404?'bad_model':'upstream_error',(j.error&&j.error.message)||('HTTP '+r.status));
+    const t=((((j.candidates||[])[0]||{}).content||{}).parts||[]).map(p=>p.text||'').join('');
+    if(!t.trim())throw E('empty_completion','');
+    try{return JSON.parse(t)}catch(e){throw E('invalid_json','',t)}
+  }
+};
+
+$('drop').onclick=()=>$('file').click();
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('on')};
+drop.ondragleave=()=>drop.classList.remove('on');
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove('on');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0])};
+$('file').onchange=()=>$('file').files[0]&&load($('file').files[0]);
+
+async function load(f){
+  drop.textContent='⏳ جاري قراءة '+f.name+'...';
+  pdf=null;N=0;$('viewer').hidden=true;$('imgRow').hidden=true;$('rangeRow').hidden=true;
+  try{
+    const ext=f.name.split('.').pop().toLowerCase();
+    if(ext==='pdf'){
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+      pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer(),disableFontFace:true}).promise;N=pdf.numPages;
+      txt.value='';txt.placeholder='تم تحميل الملف ('+N+' صفحة). النص يُستخرج من الصفحات المحددة عند التوليد. يمكنك أيضًا اللصق هنا لتجاوز الملف.';
+      $('viewer').hidden=false;$('imgRow').hidden=false;$('rangeRow').hidden=false;
+      $('tot').textContent=N;$('pg').max=N;$('from').max=N;$('to').max=N;$('from').value=1;$('to').value=Math.min(N,5);
+      cur=1;await show(1);
+    }else{
+      const t=ext==='docx'?(await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value:await f.text();
+      if(!t.trim())throw 0;txt.value=t.trim();
+    }
+    drop.textContent='✅ '+f.name+(N?' ('+N+' صفحة)':'')+' — اضغط لتغيير الملف';
+    detect();
+  }catch(e){drop.textContent='⚠️ ما قدرت أقرأ الملف. جرب ملف ثاني أو الصق النص.'}
+}
+
+async function show(p){
+  if(!pdf)return;p=Math.min(N,Math.max(1,p|0||1));cur=p;$('pg').value=p;
+  const t=++gen,page=await pdf.getPage(p),vp=page.getViewport({scale:1.4}),c=$('cv');
+  c.width=vp.width;c.height=vp.height;
+  await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+}
+$('stop').onclick=()=>{if(ctl)ctl.abort();$('stop').hidden=true;};
+$('prev').onclick=()=>show(cur-1);$('next').onclick=()=>show(cur+1);
+$('pg').onchange=()=>show(+$('pg').value);
+$('setFrom').onclick=()=>{$('from').value=cur;if(+$('to').value<cur)$('to').value=cur;detect()};
+$('setTo').onclick=()=>{$('to').value=cur;if(+$('from').value>cur)$('from').value=cur;detect()};
+$('from').onchange=$('to').onchange=detect;
+
+function range(){let a=Math.max(1,+$('from').value||1),b=Math.min(N,+$('to').value||a);if(b<a)[a,b]=[b,a];return[a,b]}
+async function getText(){
+  if(txt.value.trim())return txt.value.trim();
+  if(!pdf)return '';
+  const[a,b]=range();let t='';
+  for(let i=a;i<=b;i++){const c=await(await pdf.getPage(i)).getTextContent();t+=`\n[صفحة ${i}]\n`+c.items.map(x=>x.str).join(' ')}
+  return t;
+}
+// auto-detection of content kind
+async function detect(){
+  let t='';try{t=pdf&&!txt.value.trim()?(await getText()).slice(0,12000):txt.value.slice(0,12000)}catch(e){}
+  if(!t.trim()){$('auto').textContent='';return}
+  const math=(t.match(/[=+\-×÷√∑∫≤≥π^]|\d+\s?(mm|cm|m|kN|MPa|kg|N|Pa|°C|V|A|Ω|Hz|W|psi|ksi)\b/g)||[]).length/(t.length/1000);
+  const ex=/(example|solution|problem|exercise|given|find|determine|مثال|الحل|مسألة|تمرين|المعطيات|احسب|أوجد)/gi;
+  const exN=(t.match(ex)||[]).length;
+  const eng=math>8||exN>=4;
+  sug=eng?{type:exN>=3?'problem':'mix',mode:exN>=3?'similar':'content'}:{type:'mcq',mode:'content'};
+  const tn={mcq:'اختيار من متعدد',problem:'مسائل مع الحل',mix:'متنوعة'}[sug.type],mn={similar:'مشابهة للأمثلة',content:'من المحتوى'}[sug.mode];
+  $('auto').textContent='الاقتراح التلقائي: '+(eng?'يبدو مرجعًا هندسيًا/حسابيًا — ':'')+tn+' ('+mn+')';
+}
+txt.oninput=detect;
+
+$('go').onclick=async()=>{
+  const btn=$('go');btn.disabled=true;ctl=new AbortController();$('stop').hidden=false;
+  out.innerHTML='<div class="msg">⏳ جاري التحضير...</div>';
+  try{
+    if(!$('key').value.trim()){$('set').open=true;out.innerHTML='<div class="msg err">ضع مفتاح Gemini في الإعدادات أولًا.</div>';return}
+    localStorage.setItem('gk',$('key').value.trim());localStorage.setItem('gm',$('model').value.trim());
+    const useImg=$('img').checked&&pdf&&!txt.value.trim();
+    let text='',groups=[];
+    if(useImg){
+      const lim=await sample.limits().catch(()=>({}));
+      if(!lim.images){out.innerHTML='<div class="msg err">قراءة الصور غير متاحة لحسابك، ألغِ الخيار.</div>';return}
+      const[a,b]=range(),mx=lim.images.maxCount||4,pages=[];
+      for(let i=a;i<=Math.min(b,a+11);i++)pages.push(i);
+      for(let i=0;i<pages.length;i+=mx)groups.push(pages.slice(i,i+mx));
+    }else{
+      text=await getText();
+      if(text.length<50){out.innerHTML='<div class="msg err">ارفع ملف أو الصق نص أطول.</div>';return}
+    }
+    out.innerHTML='<div class="msg">⏳ الذكاء الاصطناعي يجهز الأسئلة...</div>';
+    const type=$('type').value==='auto'?sug.type:$('type').value,mode=$('mode').value==='auto'?sug.mode:$('mode').value;
+    const n=Math.min(30,Math.max(1,+$('n').value||6));
+    const T={mcq:'كلها اختيار من متعدد (type:"mcq") بأربعة خيارات',tf:'كلها صح/خطأ (type:"tf")',short:'كلها إجابة قصيرة (type:"short")',problem:'كلها مسائل حسابية/تحليلية (type:"problem") لكل منها حل خطوة بخطوة',mix:'متنوعة بين mcq وtf وshort وproblem'}[type];
+    const M=mode==='similar'?'الأسئلة يجب أن تكون مشابهة للأمثلة والمسائل الموجودة في المحتوى: نفس الفكرة وطريقة الحل مع تغيير الأرقام والمعطيات والسياق، وتأكد من صحة الحل الرقمي واتساق الوحدات. إذا لم توجد أمثلة فاستنتج مسائل من القوانين والمفاهيم.':'الأسئلة تغطي المفاهيم والقوانين والحقائق الواردة في المحتوى فقط.';
+    const L={auto:'اكتب بلغة المحتوى نفسها (إذا كان مختلطًا فبالعربية مع إبقاء المصطلحات الفنية بالإنجليزية).',ar:'اكتب بالعربية مع إبقاء المصطلحات الفنية بالإنجليزية بين قوسين عند الحاجة.',en:'Write everything in English.',mix:'اكتب بالعربية وأبقِ المصطلحات الهندسية والرموز بالإنجليزية.'}[$('lang').value];
+    const mk=n=>`أنت أستاذ محترف. اكتب ${n} أسئلة بمستوى "${$('lvl').value}". ${T}. ${M} ${L}
+اكتب الشرح والحل كنقاط قصيرة داخل مصفوفة explanation، كل نقطة خطوة أو فكرة واحدة (للمسائل: المعطيات، القانون، التعويض، النتيجة بالوحدات).\nاكتب المعادلات بنص عادي ورموز يونيكود (مثل σ = F/A) بدون LaTeX.
+أعد JSON فقط (مصفوفة) بدون أي شرح أو علامات:
+[{"type":"mcq","q":"..","options":["..",".."," ..",".."],"answer":0,"explanation":["..",".."]},
+{"type":"tf","q":"..","answer":true,"explanation":["..",".."]},
+{"type":"short","q":"..","answer":"..","explanation":["..",".."]},
+{"type":"problem","q":"نص المسألة مع المعطيات","answer":"الجواب النهائي مع الوحدة","explanation":["المعطيات: ..","القانون: ..","التعويض: ..","النتيجة: .."]}]
+في mcq الحقل answer رقم الخيار الصحيح (يبدأ من 0).${$('trG').checked?'\nأضف لكل سؤال حقلًا إضافيًا "q_tr" فيه ترجمة نص السؤال إلى العربية إذا كان بالإنجليزية وإلى الإنجليزية إذا كان بالعربية (الرموز والأرقام والوحدات كما هي).':''}
+${useImg?'المحتوى في الصور المرفقة (صفحات من الملف).':'المحتوى:\n"""\n'+text.slice(0,30000)+'\n"""'}`;
+    const ok=q=>q&&q.q&&(q.type==='tf'||q.type==='short'||q.type==='problem'||(q.type==='mcq'&&Array.isArray(q.options)&&q.options.length>1));
+    const clean=r=>(Array.isArray(r)?r:(r.questions||[])).filter(ok);
+    const ask=async(nq,blobs,label)=>{
+      const opts={cache:false,signal:ctl.signal,status:m=>{out.innerHTML='<div class="msg">⏳ '+label+m+'</div>'},onText:({text})=>{out.innerHTML='<div class="msg">⏳ '+label+'جاري الكتابة... ('+text.length+' حرف)</div>'}};
+      if(blobs)opts.images=blobs;
+      const full=mk(nq)+'\nأعد JSON فقط. اجعل نقاط الشرح مختصرة (من 2 إلى 6 نقاط).';
+      try{return clean(await sample.json(full,opts))}
+      catch(e){if(e&&(e.code==='invalid_json'||e.code==='cancelled')&&e.text){const r=clean(salvage(e.text));if(r.length)return r}throw e}
+    };
+    let qs=[],note='';
+    if(useImg){
+      const k=groups.length,per=Math.ceil(n/k);
+      for(let gi=0;gi<k&&qs.length<n;gi++){
+        if(ctl.signal.aborted){note='⏹ تم إيقاف التوليد، هذي الأسئلة المكتملة.';break}
+        try{
+          out.innerHTML='<div class="msg">⏳ الجزء '+(gi+1)+' من '+k+': تجهيز الصفحات...</div>';
+          const blobs=[];
+          for(const p of groups[gi]){const pg=await pdf.getPage(p),vp=pg.getViewport({scale:1.6}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+            await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;blobs.push(await new Promise(r=>c.toBlob(r,'image/jpeg',.82)))}
+          qs=qs.concat(await ask(Math.max(1,Math.min(per,n-qs.length)),blobs,'الجزء '+(gi+1)+' من '+k+': '));
+        }catch(e){if(!qs.length)throw e;if(e&&e.code==='cancelled'){note='⏹ تم إيقاف التوليد، هذي الأسئلة المكتملة.';break}note='⚠️ توقف التوليد عند الجزء '+(gi+1)+' ('+(e&&e.code||'خطأ')+')، هذي الأسئلة المكتملة.';break}
+      }
+      qs=qs.slice(0,n);
+    }else qs=await ask(n,null,'');
+    if(ctl.signal.aborted&&!note)note='⏹ تم إيقاف التوليد، هذي الأسئلة المكتملة.';
+    if(!qs.length&&ctl.signal.aborted){out.innerHTML='<div class="msg">⏹ تم إيقاف التوليد.</div>';return}
+    render(qs);
+    if(note)out.insertAdjacentHTML('afterbegin','<div class="msg err">'+note+'</div>');
+  }catch(e){
+    const c=e&&e.code||'unknown';
+    if(c==='cancelled'){out.innerHTML='<div class="msg">⏹ تم إيقاف التوليد.</div>';return}
+    const m={not_granted:'لازم توافق على صلاحية الذكاء الاصطناعي.',rate_limited:'تجاوزت الحد المجاني للمفتاح، انتظر دقيقة أو قلّل الصفحات.',invalid_json:'الرد جاء ناقص أو بصيغة غير صحيحة. جرب عدد أسئلة أقل (مثلًا 4) أو نطاق صفحات أصغر.',prompt_too_large:'النص طويل جدًا، صغّر نطاق الصفحات.',images_unavailable:'قراءة الصور غير متاحة، ألغِ الخيار.',image_rejected:'الصور مرفوضة، جرب صفحات أقل.',refused:'تم رفض الطلب لهذا المحتوى، جرب نطاقًا آخر.',empty_completion:'ما جاء رد، جرب مرة ثانية.',no_key:'ضع مفتاح Gemini في الإعدادات.',bad_key:'المفتاح غير صالح أو غير مفعّل أو الطلب مرفوض (انظر التفاصيل تحت).',bad_model:'اسم النموذج غير صحيح، غيّره من الإعدادات.',network:'تعذّر الاتصال بالإنترنت.',session_expired:'سجّل دخولك مرة ثانية.'}[c]||'تعذّر الاتصال، جرب مرة ثانية.';
+    out.innerHTML='<div class="msg err">صار خطأ ('+c+'): '+m+(e&&e.message?'<br><small dir="ltr">'+String(e.message).replace(/</g,'&lt;').slice(0,200)+'</small>':'')+'</div>';
+  }finally{btn.disabled=false;$('stop').hidden=true}
+};
+
+function salvage(s){
+  const r=[];let d=0,st=-1,inS=false,esc=false;
+  for(let i=0;i<s.length;i++){const ch=s[i];
+    if(inS){if(esc)esc=false;else if(ch==='\\')esc=true;else if(ch==='"')inS=false;continue}
+    if(ch==='"'){inS=true;continue}
+    if(ch==='{'){if(d===0)st=i;d++}
+    else if(ch==='}'){d--;if(d===0&&st>=0){try{r.push(JSON.parse(s.slice(st,i+1)))}catch(e){}st=-1}}
+  }
+  return r;
+}
+
+// ---- solve pasted questions ----
+let pimgs=[];
+const updImg=()=>{$('imgn').textContent=pimgs.length?'🖼️ '+pimgs.length+' صورة مرفقة':''};
+$('sq').addEventListener('paste',e=>{const fs=[...((e.clipboardData&&e.clipboardData.files)||[])].filter(f=>f.type.startsWith('image/'));if(fs.length){pimgs.push(...fs);updImg()}});
+const addTxt=t=>{$('sq').value+=($('sq').value?'\n\n':'')+t};
+$('clip').onclick=async()=>{
+  try{
+    const items=await navigator.clipboard.read();let got=false;
+    for(const it of items){
+      if(it.types.includes('text/plain')){addTxt(await(await it.getType('text/plain')).text());got=true}
+      else{const t=it.types.find(x=>x.startsWith('image/'));if(t){pimgs.push(await it.getType(t));got=true}}
+    }
+    updImg();if(!got)out.innerHTML='<div class="msg err">الحافظة فاضية أو نوعها غير مدعوم.</div>';
+  }catch(e){
+    try{addTxt(await navigator.clipboard.readText())}catch(e2){out.innerHTML='<div class="msg err">المتصفح ما سمح بقراءة الحافظة. اضغط داخل الخانة والصق بـ Ctrl+V (أو لصق مطوّل على الجوال).</div>'}
+  }
+};
+$('clr').onclick=()=>{$('sq').value='';pimgs=[];updImg()};
+$('solveBtn').onclick=async()=>{
+  const q=$('sq').value.trim();
+  if(!q&&!pimgs.length){out.innerHTML='<div class="msg err">الصق سؤالًا أو صورة أولًا.</div>';return}
+  if(!$('key').value.trim()){$('set').open=true;out.innerHTML='<div class="msg err">ضع مفتاح Gemini في الإعدادات أولًا.</div>';return}
+  localStorage.setItem('gk',$('key').value.trim());localStorage.setItem('gm',$('model').value.trim());
+  const btn=$('solveBtn');btn.disabled=true;ctl=new AbortController();$('stop').hidden=false;
+  out.innerHTML='<div class="msg">⏳ جاري الحل...</div>';
+  try{
+    const L={auto:'اكتب الحل بلغة السؤال نفسها (وإذا كان مختلطًا فبالعربية مع إبقاء المصطلحات الفنية بالإنجليزية).',ar:'اكتب بالعربية مع إبقاء المصطلحات الفنية بالإنجليزية.',en:'Write everything in English.',mix:'اكتب بالعربية وأبقِ المصطلحات الهندسية والرموز بالإنجليزية.'}[$('lang').value];
+    const prompt=`أنت أستاذ هندسة محترف. فيما يلي سؤال أو أكثر. إذا كان أكثر من سؤال فافصلها. حلّ كل سؤال خطوة بخطوة بدقة، واكتب الوحدات في كل خطوة، وتحقق من الحساب مرتين قبل الإجابة النهائية. ${L}
+اكتب المعادلات بنص عادي ورموز يونيكود (مثل S = √(P² + Q²)) بدون LaTeX.
+أعد JSON فقط (مصفوفة) بدون أي شرح أو علامات:
+[{"q":"نص السؤال كما فهمته","steps":[{"t":"المعطيات","eq":["S_base = 100 MVA","V_base1 = 20 kV"]},{"t":"القانون","eq":["V_base2 = V_base1 × (230/20)"]},{"t":"التعويض والحساب","note":"ملاحظة نصية قصيرة إن لزم","eq":["V_base2 = 20 × (230/20) = 230 kV"]}],"answer":"V_base2 = 230 kV; Z_pu = j0.125 pu"}]
+قواعد التنسيق (مهمة للقراءة): "t" عنوان قصير بدون أي معادلات. كل عنصر في "eq" معادلة أو عملية واحدة فقط وبدون أي كلمة عربية إطلاقًا (رموز وأرقام ووحدات فقط). أي شرح نصي ضعه في "note" بجملة قصيرة. في "answer" اكتب القيم النهائية فقط مفصولة بفاصلة منقوطة.${$('trS').checked?' أضف لكل عنصر حقل "q_tr" فيه ترجمة نص السؤال كاملًا إلى العربية إذا كان بالإنجليزية وإلى الإنجليزية إذا كان بالعربية، مع إبقاء الرموز والأرقام والوحدات كما هي.':''}
+${q?'الأسئلة:\n"""\n'+q.slice(0,20000)+'\n"""':''}${pimgs.length?'\nالأسئلة موجودة أيضًا في الصور المرفقة.':''}`;
+    const opts={signal:ctl.signal,status:m=>{out.innerHTML='<div class="msg">⏳ '+m+'</div>'}};
+    if(pimgs.length)opts.images=pimgs.slice(0,10);
+    let r;
+    try{r=await sample.json(prompt,opts)}
+    catch(e){if(e&&(e.code==='invalid_json'||e.code==='cancelled')&&e.text){r=salvage(e.text);if(!r.length)throw e}else throw e}
+    const arr=(Array.isArray(r)?r:(r.solutions||r.questions||[r])).filter(x=>x&&(x.answer||x.steps));
+    renderSol(arr);out.scrollIntoView({behavior:'smooth'});
+  }catch(e){
+    const c=e&&e.code||'unknown';
+    out.innerHTML=c==='cancelled'?'<div class="msg">⏹ تم إيقاف الحل.</div>':'<div class="msg err">صار خطأ ('+c+')'+(e&&e.message?'<br><small dir="ltr">'+String(e.message).replace(/</g,'&lt;').slice(0,200)+'</small>':'')+'</div>';
+  }finally{btn.disabled=false;$('stop').hidden=true}
+};
+function trEl(t){const d=document.createElement('div');d.className='qtr';d.dir=/[\u0600-\u06FF]/.test(t)?'rtl':'ltr';d.style.unicodeBidi='isolate';d.style.textAlign='start';d.textContent=t;return d}
+const hasAr=t=>/[\u0600-\u06FF]/.test(t||'');
+const dirOf=t=>hasAr(t)?'rtl':'ltr';
+const eqEl=t=>{const d=document.createElement('div');d.className='eq';d.dir='ltr';d.textContent=t;return d};
+function txtEl(cls,t){const d=document.createElement('div');d.className=cls;d.dir=dirOf(t);d.style.unicodeBidi='isolate';d.style.textAlign='start';d.textContent=t;return d}
+function stepEl(st,i){
+  if(typeof st==='string'){
+    const m=st.match(/^([^:：]{1,40})[:：]\s*([\s\S]+)$/);
+    if(m&&!hasAr(m[2]))st={t:m[1].trim(),eq:m[2].split(/\s*[;؛،]\s*/).filter(Boolean)};
+    else if(m&&hasAr(m[1]))st={t:m[1].trim(),note:m[2].trim()};
+    else st={note:st};
+  }
+  const w=document.createElement('div');w.className='st';
+  if(st.t){const h=document.createElement('div');h.className='stt';h.dir=dirOf(st.t);
+    const n=document.createElement('span');n.className='num';n.textContent=(i+1);h.appendChild(n);
+    const tx=document.createElement('span');tx.style.unicodeBidi='isolate';tx.textContent=st.t;h.appendChild(tx);w.appendChild(h)}
+  if(st.note)w.appendChild(txtEl('note',st.note));
+  (Array.isArray(st.eq)?st.eq:(st.eq?[st.eq]:[])).forEach(e=>w.appendChild(eqEl(String(e))));
+  return w;
+}
+function ansEl(a,label){
+  const b=document.createElement('div');b.className='ans';
+  const h=txtEl('stt','✅ '+(label||'الجواب النهائي'));h.dir='rtl';b.appendChild(h);
+  const t=String(a||'');
+  if(hasAr(t))b.appendChild(txtEl('note',t));
+  else t.split(/\s*[;؛]\s*|,\s+(?=[A-Za-zΑ-Ωα-ω_][^,=]*=)/).filter(Boolean).forEach(x=>b.appendChild(eqEl(x)));
+  return b;
+}
+function renderSol(arr){
+  if(!arr.length){out.innerHTML='<div class="msg err">ما قدرت أستخرج حلولًا، جرب مرة ثانية.</div>';return}
+  out.innerHTML='';
+  arr.forEach((x,i)=>{
+    const c=el('div','card q');c.appendChild(el('h3','',(arr.length>1?(i+1)+'. ':'')+(x.q||'')));if(x.q_tr)c.appendChild(trEl(x.q_tr));
+    const ss=Array.isArray(x.steps)?x.steps:String(x.steps||'').split(/\n+/).filter(Boolean);
+    ss.forEach((st,j)=>c.appendChild(stepEl(st,j)));
+    if(x.answer)c.appendChild(ansEl(x.answer));
+    out.appendChild(c);
+  });
+}
+
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;e.dir='auto';return e}
+function render(qs){
+  if(!qs.length){out.innerHTML='<div class="msg err">ما طلعت أسئلة، جرب مرة ثانية.</div>';return}
+  let done=0,right=0;out.innerHTML='';
+  const sc=el('div','card score','عدد الأسئلة: '+qs.length);out.appendChild(sc);
+  const fin=ok=>{done++;if(ok)right++;sc.textContent='النتيجة: '+right+' / '+done+' (من '+qs.length+')'};
+  qs.forEach((q,i)=>{
+    const c=el('div','card q');c.appendChild(el('h3','',(i+1)+'. '+q.q));if(q.q_tr)c.appendChild(trEl(q.q_tr));
+    const exp=el('div','exp');exp.hidden=true;
+    const show=pre=>{exp.textContent='';const h=el('div','',pre);h.style.fontWeight='700';exp.appendChild(h);
+      const pts=(Array.isArray(q.explanation)?q.explanation:String(q.explanation||'').split(/\n+|(?<=[.!؟])\s+/)).map(x=>String(x).replace(/^\s*(?:[-•*]|\d+[.)])\s+/,'').trim()).filter(Boolean);
+      pts.forEach((x,j)=>{const e=stepEl(x,j);e.style.marginTop='8px';exp.appendChild(e)});
+      exp.hidden=false};
+    if(q.type==='mcq'||q.type==='tf'){
+      const opts=q.type==='tf'?['صح / True','خطأ / False']:q.options,ans=q.type==='tf'?(q.answer?0:1):q.answer;
+      const bs=opts.map(o=>{const b=el('button','opt',o);c.appendChild(b);return b});
+      bs.forEach((b,j)=>b.onclick=()=>{bs.forEach(x=>x.disabled=true);bs[ans].classList.add('ok');if(j!==ans)b.classList.add('no');show(j===ans?'✅ إجابة صحيحة':'❌ الصحيح: '+opts[ans]);fin(j===ans)});
+    }else{
+      const b=el('button','', q.type==='problem'?'أظهر الحل':'أظهر الإجابة');c.appendChild(b);
+      b.onclick=()=>{b.hidden=true;show('✅ '+q.answer)};
+    }
+    c.appendChild(exp);out.appendChild(c);
+  });
+}
+</script>
+</body>
+</html>
